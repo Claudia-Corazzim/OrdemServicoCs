@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambiente virtual
+venv/
+env/
+ENV/
+
+# SQLite database
+*.db
+
+# PDFs gerados
+pdfs/
+
+# VS Code
+.vscode/
