@@ -24,8 +24,7 @@ def criar_tabelas():
         endereco TEXT
     )
     """)
-    
-    # Criar tabela de ordens
+      # Criar tabela de ordens
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS ordens (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,6 +36,7 @@ def criar_tabelas():
         status TEXT,
         veiculo TEXT,
         placa TEXT,
+        observacoes TEXT,
         FOREIGN KEY(cliente_id) REFERENCES clientes(id)
     )
     """)

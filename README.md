@@ -32,4 +32,4 @@ python main.py
 # Subindo alterações para o GitHub
 - git add .
 - git commit -m "Sua mensagem descrevendo as alterações"
-- git push
+- git push origin main

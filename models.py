@@ -19,13 +19,13 @@ def buscar_clientes():
     conn.close()
     return clientes
 
-def adicionar_ordem(cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo="", placa=""):
+def adicionar_ordem(cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo="", placa="", observacoes=""):
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO ordens (cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo, placa)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo, placa))
+        INSERT INTO ordens (cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo, placa, observacoes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo, placa, observacoes))
     conn.commit()
     conn.close()
 
@@ -35,7 +35,7 @@ def listar_ordens():
     cursor.execute("""
         SELECT ordens.id, clientes.nome, ordens.data_entrada, ordens.data_saida,
                ordens.descricao, ordens.valor, ordens.status, clientes.telefone,
-               clientes.endereco, ordens.veiculo, ordens.placa
+               clientes.endereco, ordens.veiculo, ordens.placa, ordens.observacoes
         FROM ordens
         JOIN clientes ON clientes.id = ordens.cliente_id
         ORDER BY ordens.id DESC

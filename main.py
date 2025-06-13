@@ -55,6 +55,7 @@ def salvar_ordem():
     placa = ent_placa_os.get()
     if placa == "Placa":
         placa = ""
+    observacoes = txt_observacoes.get("1.0", "end").strip()
     
     # Calcula o valor total baseado nos valores na descrição
     valor_total = 0
@@ -75,7 +76,7 @@ def salvar_ordem():
                 except ValueError:
                     pass
 
-    adicionar_ordem(cliente_id, entrada, saida, descricao, valor_total, status, veiculo, placa)
+    adicionar_ordem(cliente_id, entrada, saida, descricao, valor_total, status, veiculo, placa, observacoes)
     messagebox.showinfo("Ordem", "Ordem de serviço salva!")
     limpar_campos_os()
     listar_os()
@@ -86,6 +87,7 @@ def limpar_campos_os():
     ent_veiculo_os.delete(0, tk.END)
     ent_placa_os.delete(0, tk.END)
     txt_descricao.delete("1.0", tk.END)
+    txt_observacoes.delete("1.0", tk.END)
     cb_status.set("Aguardando")
     
     # Restaurar os placeholders
@@ -240,6 +242,11 @@ ent_placa_os.bind('<FocusOut>', lambda e: on_focus_out(e, "Placa"))
 
 txt_descricao = tk.Text(frame2, height=4, width=90)
 txt_descricao.grid(row=2, column=0, columnspan=5, padx=5)
+
+# Adiciona label para observações
+tk.Label(frame2, text="Observações:").grid(row=3, column=0, sticky="w", padx=5, pady=(5,0))
+txt_observacoes = tk.Text(frame2, height=3, width=90)
+txt_observacoes.grid(row=4, column=0, columnspan=5, padx=5)
 
 tk.Button(frame2, text="Salvar OS", command=salvar_ordem).grid(row=1, column=5)
 

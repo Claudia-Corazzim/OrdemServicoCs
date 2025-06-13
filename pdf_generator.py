@@ -9,7 +9,7 @@ from datetime import datetime
 def gerar_pdf_os(dados_os):
     """
     Gera um PDF para uma ordem de serviço
-    dados_os: tupla com os valores da OS (id, cliente, entrada, saída, descrição, valor, status, telefone, endereco, veiculo, placa)
+    dados_os: tupla com os valores da OS (id, cliente, entrada, saída, descrição, valor, status, telefone, endereco, veiculo, placa, observacoes)
     """
     pdf = FPDF()
     pdf.add_page()
@@ -132,12 +132,20 @@ def gerar_pdf_os(dados_os):
     pdf.set_font("Arial", 'B', 11)
     pdf.cell(160, 6, "Total:", align='R')
     pdf.cell(0, 6, f"R$ {total:.2f}", align='C', ln=True)
-    
-    # Observações
+      # Observações
     pdf.ln(5)
     pdf.cell(0, 6, "Observações:", ln=True)
-    for _ in range(3):  # 3 linhas para observações
-        pdf.cell(0, 6, "_" * 90, ln=True)
+    observacoes = dados_os[11] if len(dados_os) > 11 and dados_os[11] else ""
+    
+    # Se tiver observações, mostra-as
+    if observacoes:
+        # Quebra as observações em múltiplas linhas se necessário
+        pdf.set_font("Arial", '', 10)
+        pdf.multi_cell(0, 6, observacoes)
+    else:
+        # Se não tiver observações, mostra linhas em branco
+        for _ in range(3):  # 3 linhas para observações
+            pdf.cell(0, 6, "_" * 90, ln=True)
     
     # Data de Saída e Status
     pdf.ln(5)
