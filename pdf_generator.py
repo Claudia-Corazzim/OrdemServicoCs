@@ -8,6 +8,13 @@ def gerar_pdf_os(dados_os):
     """
     pdf = FPDF()
     pdf.add_page()
+    
+    # Adiciona o logo se existir
+    logo_path = os.path.join("images", "logo.png")
+    if os.path.exists(logo_path):
+        pdf.image(logo_path, x=10, y=10, w=50)  # Ajuste w (largura) conforme necessário
+        pdf.ln(20)  # Espaço após o logo
+    
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(200, 10, f"Ordem de Serviço Nº {dados_os[0]}", ln=True, align="C")
 
