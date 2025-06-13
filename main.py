@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from database import criar_tabelas
-from models import adicionar_cliente, buscar_clientes, adicionar_ordem, listar_ordens
+from models import adicionar_cliente, buscar_clientes, adicionar_ordem, listar_ordens, excluir_cliente
 from pdf_generator import gerar_pdf_os
 
 criar_tabelas()
@@ -119,6 +119,24 @@ def on_focus_out(event, placeholder):
     if not widget.get():
         widget.insert(0, placeholder)
 
+def excluir_cliente_gui():
+    cliente = cb_clientes.get()
+    if not cliente:
+        messagebox.showwarning("Atenção", "Selecione um cliente para excluir.")
+        return
+    
+    if messagebox.askyesno("Confirmar Exclusão", 
+                          f"Tem certeza que deseja excluir o cliente {cliente}?\n" +
+                          "Todas as ordens de serviço relacionadas também serão excluídas."):
+        try:
+            cliente_id = cliente_ids.get(cliente)
+            excluir_cliente(cliente_id)
+            messagebox.showinfo("Sucesso", "Cliente excluído com sucesso!")
+            atualizar_clientes()
+            listar_os()  # Atualiza a lista de OS para remover as OS do cliente excluído
+        except Exception as e:
+            messagebox.showerror("Erro", f"Erro ao excluir cliente: {str(e)}")
+
 # ----------- GUI: Cadastro Cliente -----------
 frame1 = tk.LabelFrame(root, text="Cadastro de Cliente")
 frame1.pack(fill="x", padx=10, pady=5)
@@ -156,6 +174,7 @@ ent_placa.bind("<FocusIn>", lambda e: on_focus_in(e, "Placa"))
 ent_placa.bind("<FocusOut>", lambda e: on_focus_out(e, "Placa"))
 
 tk.Button(frame1, text="Salvar Cliente", command=salvar_cliente).grid(row=0, column=4, padx=5)
+tk.Button(frame1, text="Excluir Cliente", command=excluir_cliente_gui).grid(row=0, column=5, padx=5)
 
 # ----------- GUI: Cadastro de OS -----------
 frame2 = tk.LabelFrame(root, text="Nova Ordem de Serviço")

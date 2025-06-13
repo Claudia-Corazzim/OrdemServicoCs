@@ -42,3 +42,21 @@ def listar_ordens():
     ordens = cursor.fetchall()
     conn.close()
     return ordens
+
+def excluir_cliente(cliente_id):
+    conn = conectar()
+    cursor = conn.cursor()
+    try:
+        # Primeiro excluir as ordens de serviço relacionadas
+        cursor.execute("DELETE FROM ordens WHERE cliente_id = ?", (cliente_id,))
+        
+        # Depois excluir o cliente
+        cursor.execute("DELETE FROM clientes WHERE id = ?", (cliente_id,))
+        
+        conn.commit()
+    except Exception as e:
+        print(f"Erro ao excluir cliente: {e}")
+        conn.rollback()
+        raise e
+    finally:
+        conn.close()
