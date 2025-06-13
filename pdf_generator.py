@@ -8,12 +8,23 @@ def gerar_pdf_os(dados_os):
     """
     pdf = FPDF()
     pdf.add_page()
-    
-    # Adiciona o logo se existir
+      # Adiciona o logo se existir
     logo_path = os.path.join("images", "logo.png")
     if os.path.exists(logo_path):
         pdf.image(logo_path, x=10, y=10, w=50)  # Ajuste w (largura) conforme necessário
-        pdf.ln(20)  # Espaço após o logo
+        
+    # Informações de contato e endereço
+    pdf.set_font("Arial", '', 10)
+    whatsapp_icon = os.path.join("images", "whatsapp.png")
+    if os.path.exists(whatsapp_icon):
+        pdf.image(whatsapp_icon, x=70, y=15, w=5)  # ícone pequeno do WhatsApp
+    pdf.set_xy(77, 15)
+    pdf.cell(0, 5, "(19) 99676-0164", ln=True)
+    
+    pdf.set_xy(70, 20)
+    pdf.multi_cell(0, 5, "Av. Pedro Botesi, 2352\nJd. Scomparim - Mogi Mirim - SP", align='L')
+    
+    pdf.ln(20)  # Espaço após o cabeçalho
     
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(200, 10, f"Ordem de Serviço Nº {dados_os[0]}", ln=True, align="C")
