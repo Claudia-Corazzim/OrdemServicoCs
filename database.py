@@ -7,12 +7,12 @@ def conectar():
 def criar_tabelas():
     conn = conectar()
     cursor = conn.cursor()
-
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS clientes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
         telefone TEXT,
+        endereco TEXT,
         veiculo TEXT,
         placa TEXT
     )

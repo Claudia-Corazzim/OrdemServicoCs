@@ -1,13 +1,13 @@
 # models.py
 from database import conectar
 
-def adicionar_cliente(nome, telefone, veiculo, placa):
+def adicionar_cliente(nome, telefone, endereco, veiculo, placa):
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO clientes (nome, telefone, veiculo, placa)
-        VALUES (?, ?, ?, ?)
-    """, (nome, telefone, veiculo, placa))
+        INSERT INTO clientes (nome, telefone, endereco, veiculo, placa)
+        VALUES (?, ?, ?, ?, ?)
+    """, (nome, telefone, endereco, veiculo, placa))
     conn.commit()
     conn.close()
 
@@ -34,7 +34,8 @@ def listar_ordens():
     cursor = conn.cursor()
     cursor.execute("""
         SELECT ordens.id, clientes.nome, ordens.data_entrada, ordens.data_saida,
-               ordens.descricao, ordens.valor, ordens.status
+               ordens.descricao, ordens.valor, ordens.status, clientes.telefone,
+               clientes.endereco, clientes.veiculo, clientes.placa
         FROM ordens
         JOIN clientes ON clientes.id = ordens.cliente_id
         ORDER BY ordens.id DESC
@@ -56,6 +57,19 @@ def excluir_cliente(cliente_id):
         conn.commit()
     except Exception as e:
         print(f"Erro ao excluir cliente: {e}")
+        conn.rollback()
+        raise e
+    finally:
+        conn.close()
+
+def excluir_ordem(ordem_id):
+    conn = conectar()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM ordens WHERE id = ?", (ordem_id,))
+        conn.commit()
+    except Exception as e:
+        print(f"Erro ao excluir ordem: {e}")
         conn.rollback()
         raise e
     finally:

@@ -28,3 +28,8 @@ python main.py
 - `models.py`: Funções de acesso ao banco de dados
 - `database.py`: Configuração do banco de dados SQLite
 - `pdf_generator.py`: Geração de PDFs das ordens de serviço
+
+# Subindo alterações para o GitHub
+- git add .
+- git commit -m "Sua mensagem descrevendo as alterações"
+- git push
