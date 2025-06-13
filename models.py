@@ -1,13 +1,13 @@
 # models.py
 from database import conectar
 
-def adicionar_cliente(nome, telefone, endereco, veiculo, placa):
+def adicionar_cliente(nome, telefone, endereco):
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO clientes (nome, telefone, endereco, veiculo, placa)
-        VALUES (?, ?, ?, ?, ?)
-    """, (nome, telefone, endereco, veiculo, placa))
+        INSERT INTO clientes (nome, telefone, endereco)
+        VALUES (?, ?, ?)
+    """, (nome, telefone, endereco))
     conn.commit()
     conn.close()
 
@@ -19,13 +19,13 @@ def buscar_clientes():
     conn.close()
     return clientes
 
-def adicionar_ordem(cliente_id, data_entrada, data_saida, descricao, valor, status):
+def adicionar_ordem(cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo="", placa=""):
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO ordens (cliente_id, data_entrada, data_saida, descricao, valor, status)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (cliente_id, data_entrada, data_saida, descricao, valor, status))
+        INSERT INTO ordens (cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo, placa)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, (cliente_id, data_entrada, data_saida, descricao, valor, status, veiculo, placa))
     conn.commit()
     conn.close()
 
@@ -35,7 +35,7 @@ def listar_ordens():
     cursor.execute("""
         SELECT ordens.id, clientes.nome, ordens.data_entrada, ordens.data_saida,
                ordens.descricao, ordens.valor, ordens.status, clientes.telefone,
-               clientes.endereco, clientes.veiculo, clientes.placa
+               clientes.endereco, ordens.veiculo, ordens.placa
         FROM ordens
         JOIN clientes ON clientes.id = ordens.cliente_id
         ORDER BY ordens.id DESC
